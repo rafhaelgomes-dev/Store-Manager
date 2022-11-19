@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "c78889e4-fcb3-47f9-b44f-cb38e0976443",
+    "colId": "102420a2-45fc-4c30-bd54-dd626accc89c",
+    "containerId": "",
+    "name": "Lista todos os produtos",
+    "url": "http://localhost:3000/products/",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2022-11-17T00:28:52.478Z",
+    "modified": "2022-11-17T00:29:30.655Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  }
+]
