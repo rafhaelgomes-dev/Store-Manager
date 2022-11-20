@@ -27,7 +27,32 @@ const getById = async (req, res) => {
   }
 };
 
+const insert = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const result = await productsService.insert(name);
+
+    if (result.type === 'INVALID_VALUE') {
+      return res.status(400).json({ message: result.message });
+    }
+
+    if (result.type === 'NAME_LESSA_THAN_5') {
+      return res.status(422).json({ message: result.message });
+    }
+
+    if (result.message.affectedRows === 1) {
+      res.status(201).json({
+        id: result.message.insertId,
+        name,
+      });
+    }
+  } catch (error) {
+    res.status(400).send({ message: 'Erro ao cadastrar um produto' });
+  }
+};
+
 module.exports = {
   getAll,
   getById,
+  insert,
 };
