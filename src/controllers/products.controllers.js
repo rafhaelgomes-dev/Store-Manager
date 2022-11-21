@@ -4,10 +4,9 @@ const getAll = async (req, res) => {
   try {
     const result = await productsService.getAll(req.body);
     if (result.length > 0) {
-      res.status(200).json(result);
-    } else {
-      res.status(404).send({ message: 'Nenhum produto encontrado' });
-    }
+      return res.status(200).json(result);
+    } 
+      return res.status(404).send({ message: 'Nenhum produto encontrado' });
   } catch (error) {
     res.status(400).send({ message: 'Erro ao buscar produtos' });
   }
@@ -18,10 +17,9 @@ const getById = async (req, res) => {
     const { id } = req.params;
     const result = await productsService.getById(Number(id));
     if (result.length > 0) {
-      res.status(200).json(result[0]);
-    } else {
-      res.status(404).send({ message: 'Product not found' });
-    }
+      return res.status(200).json(result[0]);
+    } 
+      return res.status(404).send({ message: 'Product not found' });
   } catch (error) {
     res.status(400).send({ message: 'Erro ao buscar produto' });
   }
@@ -41,7 +39,7 @@ const insert = async (req, res) => {
     }
 
     if (result.message.affectedRows === 1) {
-      res.status(201).json({
+      return res.status(201).json({
         id: result.message.insertId,
         name,
       });
@@ -66,11 +64,24 @@ const update = async (req, res) => {
     }
 
     if (result.type) {
-      res.status(result.statusCode).json({ message: result.message });
+     return res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
     res.status(400).send({ message: 'Erro ao atualizar o produto' });
   } 
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await productsService.deleteProduct(id);
+    if (result.type) {
+      return res.status(result.statusCode).json({ message: result.message });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(400).send({ message: 'Erro ao tentar deletar um produto' });
+  }
 };
 
 module.exports = {
@@ -78,4 +89,5 @@ module.exports = {
   getById,
   insert,
   update,
+  deleteProduct,
 };
