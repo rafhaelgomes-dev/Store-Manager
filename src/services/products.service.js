@@ -28,8 +28,33 @@ const insert = async (data) => {
   return { type: null, message: result };
 };
 
+const update = async (id, name) => {
+  const productId = await productsModel.getById(id);
+
+  if (!name) {
+    return { type: 'INVALID_VALUE', statusCode: 400, message: '"name" is required' };
+  }
+
+  if (name.length < 5) {
+    return {
+      type: 'NAME_LESSA_THAN_5',
+      statusCode: 422,
+      message: '"name" length must be at least 5 characters long',
+    };
+  }
+
+  if (productId.length === 0) {
+    return { type: 'product_not_found', statusCode: 404, message: 'Product not found' };
+  }
+
+  const result = await productsModel.update(id, name);
+
+  return result;
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
+  update,
 };

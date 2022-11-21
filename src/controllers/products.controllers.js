@@ -51,8 +51,31 @@ const insert = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const result = await productsService.update(Number(id), name);
+
+    if (result.affectedRows > 0) {
+      return res.status(200).json({
+        id,
+        name,
+      });
+    }
+
+    if (result.type) {
+      res.status(result.statusCode).json({ message: result.message });
+    }
+  } catch (error) {
+    res.status(400).send({ message: 'Erro ao atualizar o produto' });
+  } 
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
+  update,
 };
