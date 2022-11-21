@@ -5,7 +5,7 @@ const validateFields = async (dados) => {
   const validateQuantityLength = dados.some((e) => e.quantity <= 0);
 
   const validateQuantity = dados.some((e) => e.quantity === undefined);
-  
+
   const validateProductId = dados.some((e) => e.productId === undefined);
 
   if (validateQuantityLength) {
@@ -60,6 +60,18 @@ const insert = async (data) => {
   return { type: null, message: { id: insertId, itemsSold: data } };
 };
 
+const getAll = async () => {
+  const result = await salesModel.getAll();
+  return result;
+};
+
+const getById = async (data) => {
+  const result = await salesModel.getById(data);
+  return result;
+};
+
 module.exports = {
   insert,
+  getAll,
+  getById,
 };
