@@ -1,5 +1,5 @@
 # Projeto Store Manager
-API desenvolvida utilizando a arquitetura MSC (model-service-controller). O projeto consiste um sistema de gerenciamento de vendas no formato dropshipping no qual é possível criar, visualizar, deletar e atualizar (CRUD) produtos e vendas, utilizando como banco de dados relacional o MySQL e seguindo os princípios de uma API RESTful.
+API desenvolvida utilizando a arquitetura MSC (model-service-controller). O projeto consiste em um sistema de gerenciamento de vendas no formato dropshipping no qual é possível criar, visualizar, deletar e atualizar produtos e vendas (CRUD), utilizando como banco de dados relacional o MySQL e seguindo os princípios de uma API RESTful.
 
 Os testes unitários feitos utilizando as bibliotecas Mocha, Chai e Sinon.
 
