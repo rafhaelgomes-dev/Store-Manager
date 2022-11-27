@@ -1,58 +1,52 @@
 const chai = require('chai');
 const sinon = require('sinon');
-const chaiHttp = require('chai-http');
 const sinonChai = require('sinon-chai');
 
 const { expect } = chai;
 chai.use(sinonChai);
-chai.use(chaiHttp);
+
+const productServices = require('../../../src/services/products.service');
+
+const productController = require('../../../src/controllers/products.controllers')
 
 
-const app = require('../../../src/app');
-
-const connection = require('../../../src/database/connection');
-
-
-describe('Teste de integração de produtos', function () {
+describe('Teste de unidades de produtos', function () {
   it('Realizando uma operação INSERT', async function () {
+    
+    const res = {};
+
+    const req = {
+      body: {
+        name: "ProdutoX"
+      }
+    }
+
+
+    res.status = sinon.stub().returns(res);
+
+    res.json = sinon.stub().returns();
+
     sinon
-      .stub(connection, 'execute')
-      .onFirstCall()
-      .resolves([{
-        fieldCount: 0,
-        affectedRows: 1,
-        insertId: 5,
-        info: '',
-        serverStatus: 2,
-        warningStatus: 0
-      }])
-      .onSecondCall()
-      .resolves([{
-        fieldCount: 0,
-        affectedRows: 1,
-        insertId: 5,
-        info: '',
-        serverStatus: 2,
-        warningStatus: 0
-      }])
-      .onThirdCall()
+      .stub(productServices, 'insert')
       .resolves({
-        "id": 5,
-        "name": "ProdutoX"
+        type: null,
+        message: {
+          fieldCount: 0,
+          affectedRows: 1,
+          insertId: 5,
+          info: '',
+          serverStatus: 2,
+          warningStatus: 0
+        }
       });
 
-    const response = await chai
-      .request(app)
-      .post('/products')
-      .send({
-        "id": 5,
-        "name": "ProdutoX"
-      });
+    await productController.insert(req, res)
+
     
     
-    expect(response.status).to.be.equal(201);
+    expect(res.status).to.have.been.calledWith(201);
     
-    expect(response.body).to.be.deep.equal({
+    expect(res.json).to.have.been.calledWith({
       "id": 5,
       "name": "ProdutoX"
     });
@@ -61,32 +55,29 @@ describe('Teste de integração de produtos', function () {
   afterEach(sinon.restore);
 
   it('Realizando uma operação GetAll', async function () {
+
+    const res = {};
+
+    const req = {
+    }
+
+
+    res.status = sinon.stub().returns(res);
+
+    res.json = sinon.stub().returns();
+
     sinon
-      .stub(connection, 'execute')
-      .onFirstCall()
-      .resolves([[{
+      .stub(productServices, 'getAll')
+      .resolves([{
         "id": 5,
         "name": "ProdutoX"
-      }]])
-      .onSecondCall()
-      .resolves([[{
-        "id": 5,
-        "name": "ProdutoX"
-      }]])
-      .onThirdCall()
-      .resolves([[{
-        "id": 5,
-        "name": "ProdutoX"
-      }]]);
+      }]);
 
-    const response = await chai
-      .request(app)
-      .get('/products');
-    
+    await productController.getAll(req, res)
 
-    expect(response.status).to.be.equal(200);
+    expect(res.status).to.have.been.calledWith(200);
 
-    expect(response.body).to.be.deep.equal([{
+    expect(res.json).to.have.been.calledWith([{
       "id": 5,
       "name": "ProdutoX"
     }]);

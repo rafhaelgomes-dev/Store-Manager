@@ -26,6 +26,7 @@ const insert = async (data) => {
   const result = await productsModel.insert(data);
 
 
+  console.log({ type: null, message: result })
   return { type: null, message: result };
 };
 

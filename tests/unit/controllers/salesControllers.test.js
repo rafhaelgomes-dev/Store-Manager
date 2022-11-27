@@ -1,92 +1,87 @@
 const chai = require('chai');
 const sinon = require('sinon');
-const chaiHttp = require('chai-http');
 const sinonChai = require('sinon-chai');
 
 const { expect } = chai;
 chai.use(sinonChai);
-chai.use(chaiHttp);
 
 
-const app = require('../../../src/app');
 
 const connection = require('../../../src/database/connection');
 
+const salesServices = require('../../../src/services/sales.service');
 
-describe('Teste de integração de Sales', function () {
+const salesController = require('../../../src/controllers/sales.controllers');
+
+
+describe('Teste de unidade de Sales controller', function () {
 
   it('Realizando uma operação GetAll', async function () {
+  
+    const res = {};
+
+    const req = {
+    }
+
+
     sinon
-      .stub(connection, 'execute')
-      .onFirstCall()
-      .resolves([[{
+      .stub(salesServices, 'getAll')
+      .resolves([
+        {
+          "saleId": 1,
+          "date": "2022-11-27T02:41:13.000Z",
+          "productId": 1,
+          "quantity": 5
+        }]);
+
+    res.status = sinon.stub().returns(res);
+
+    res.json = sinon.stub().returns();
+
+    await salesController.get(req, res)
+
+    expect(res.status).to.have.been.calledWith(200);
+
+    expect(res.json).to.have.been.calledWith([
+      {
         "saleId": 1,
-        "date": "2022-11-21T03:05:49.000Z",
+        "date": "2022-11-27T02:41:13.000Z",
         "productId": 1,
         "quantity": 5
-      }]])
-      .onSecondCall()
-      .resolves([[{
-        "saleId": 1,
-        "date": "2022-11-21T03:05:49.000Z",
-        "productId": 1,
-        "quantity": 5
-      }]])
-      .onThirdCall()
-      .resolves([[{
-        "saleId": 1,
-        "date": "2022-11-21T03:05:49.000Z",
-        "productId": 1,
-        "quantity": 5
-      }]]);
-
-    const response = await chai
-      .request(app)
-      .get('/sales');
-
-    expect(response.status).to.be.equal(200);
-
-    expect(response.body).to.be.deep.equal([{
-      "saleId": 1,
-      "date": "2022-11-21T03:05:49.000Z",
-      "productId": 1,
-      "quantity": 5
-    }]);
+      }]);
   });
 
   afterEach(sinon.restore);
 
   it('Realizando uma operação getById', async function () {
+
+    const res = {};
+
+    const req = {
+      params: { id: 2 }
+    }
+
+    
+    
+    res.status = sinon.stub().returns(res);
+    
+    res.json = sinon.stub().returns();
+    
     sinon
-      .stub(connection, 'execute')
-      .onFirstCall()
-      .resolves([[{
+      .stub(salesServices, 'getById')
+      .resolves([{
         "date": "2022-11-21T03:05:49.000Z",
-        "productId": 1,
+        "productId": 2,
         "quantity": 5
-      }]])
-      .onSecondCall()
-      .resolves([[{
-        "date": "2022-11-21T03:05:49.000Z",
-        "productId": 1,
-        "quantity": 5
-      }]])
-      .onThirdCall()
-      .resolves([[{
-        "date": "2022-11-21T03:05:49.000Z",
-        "productId": 1,
-        "quantity": 5
-      }]]);
+      }]);
 
-    const response = await chai
-      .request(app)
-      .get('/sales/1');
+    await salesController.getById(req, res)
 
-    expect(response.status).to.be.equal(200);
+    expect(res.status).to.have.been.calledWith(200);
 
-    expect(response.body).to.be.deep.equal([{
+    expect(res.json).to.have.been.calledWith([{
       "date": "2022-11-21T03:05:49.000Z",
-      "productId": 1,
+      "productId": 2,
       "quantity": 5
     }]);
   });
