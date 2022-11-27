@@ -1,7 +1,7 @@
 const productsModel = require('../models/products.model');
 
-const getAll = async (data) => {
-  const result = await productsModel.getAll(data);
+const getAll = async () => {
+  const result = await productsModel.getAll();
   return result;
 };
 
@@ -24,6 +24,7 @@ const insert = async (data) => {
   }
 
   const result = await productsModel.insert(data);
+
 
   return { type: null, message: result };
 };

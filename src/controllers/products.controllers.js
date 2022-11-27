@@ -2,7 +2,7 @@ const productsService = require('../services/products.service');
 
 const getAll = async (req, res) => {
   try {
-    const result = await productsService.getAll(req.body);
+    const result = await productsService.getAll();
     if (result.length > 0) {
       return res.status(200).json(result);
     } 

@@ -13,6 +13,7 @@ const insertProducts = async (data) => {
     [data.saleId, data.productId, data.quantity],
   );
   
+
   return result;
 };
 

@@ -1,9 +1,10 @@
 const connection = require('../database/connection');
 
-const getAll = async (_data) => {
+const getAll = async () => {
   const [result] = await connection.execute(
     'SELECT * FROM StoreManager.products',
   );
+
   return result;
 };
 
@@ -20,6 +21,7 @@ const insert = async (data) => {
     'INSERT INTO StoreManager.products (name) VALUES (?)',
     [data],
   );
+
   return result;
 };
 
