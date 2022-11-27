@@ -38,7 +38,7 @@ Para rodar esse projeto, atente-se as variáveis de ambiente no seu .env
 
 ## Diagrama
 
-![Diagrama de relacionamentos das tabelas](erStoreManager.png)
+![Diagrama de relacionamentos das tabelas](diagrama.png)
 
 <i> Imagem disponibilizada pela Trybe </i>
 
